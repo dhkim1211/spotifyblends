@@ -20,6 +20,9 @@ const UserSchema = new Schema({
   fans: [{
     type: mongoose.Types.ObjectId
   }],
+  queue: [{
+    type: String
+  }],
   date: {
     type: Date,
     default: Date.now

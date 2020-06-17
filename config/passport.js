@@ -8,6 +8,13 @@ try {
 const mongoose = require("mongoose");
 const User = mongoose.model("users");
 const SpotifyStrategy = require('passport-spotify').Strategy;
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
+const keys = require("../config/keys");
+
+const opts = {};
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = keys.secretOrKey;
 
 module.exports = passport => {
     // Passport needs to be able to serialize and deserialize users to support persistent login sessions
@@ -23,17 +30,32 @@ module.exports = passport => {
         });
     });
 
+    passport.use(
+        new JwtStrategy(opts, (jwt_payload, done) => {
+          User.findById(jwt_payload.id)
+            .then(user => {
+              if (user) {
+                return done(null, user);
+              }
+              return done(null, false);
+            })
+            .catch(err => console.log(err));
+        })
+      );
+
   passport.use(new SpotifyStrategy({
     clientID: process.env.SPOTIFY_API_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
     callbackURL: process.env.CALLBACK_URL
   },
   (accessToken, refreshToken, profile, done) => {
-      console.log('profile', profile)
       // asynchronous verification, for effect...
       profile.accessToken = accessToken;
+      console.log('passport profile', profile)
+      console.log('passport aToken', accessToken)
+      console.log('passport rToken', refreshToken)
 
-      User.findOne({name: profile.name}, function(err, user) {
+      User.findOne({email: profile.emails[0].value}, function(err, user) {
 
           if (err) return done(err);
 
