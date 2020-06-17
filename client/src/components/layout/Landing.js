@@ -42,6 +42,12 @@ class Landing extends Component {
               >
                 Log In
               </Link>
+              {/* <a 
+                href="http://localhost:5000/auth/spotify/login"
+                className="btn btn-large btn-flat waves-effect white black-text"
+              >
+                Log In
+              </a> */}
             </div>
           </div>
         </div>

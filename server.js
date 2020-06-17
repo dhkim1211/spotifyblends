@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const session = require("express-session");
+const cors = require("cors");
 
 const users = require("./routes/api/users");
 const spotify = require("./routes/auth/spotify");
@@ -17,6 +18,9 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+app.use(cors({
+  origin: 'http://localhost:3000'
+}))
 
 // load .env file
 const envFilePath = (typeof process.env.NODE_ENV !== 'undefined') ? `${process.env.NODE_ENV}.env` : '.env';

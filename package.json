@@ -13,18 +13,21 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "concurrently": "^4.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "express-session": "^1.17.1",
     "is-empty": "^1.2.0",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.3.11",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-spotify": "^1.1.0",
+    "querystring": "^0.2.0",
     "spotify-web-api-node": "^4.0.0",
     "validator": "^10.9.0"
   }

@@ -1,9 +1,38 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component, useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../actions/authActions";
 import classnames from "classnames";
+
+// const Login = () => {
+//   const [errors, setErrors] = useState({});
+//   const stateErrors = useSelector(state => state.errors);
+//   const auth = useSelector(state => state.auth);
+//   const dispatch = useDispatch();
+//   const history = useHistory();
+
+//   useEffect(() => {
+//     console.log('auth', auth)
+//     if (auth.isAuthenticated) {
+//       history.push('/dashboard');
+//     } else {
+//       dispatch(loginUser());
+//     }
+//   }, [auth]);
+
+//   useEffect(() => {
+//     setErrors(stateErrors)
+//   }, [errors]);
+
+//   return (
+//     <div>
+//       <h1>Sign in with Spotify</h1>
+//     </div>
+//   )
+// }
+
+// export default Login;
 
 class Login extends Component {
   constructor() {
@@ -18,12 +47,16 @@ class Login extends Component {
   componentDidMount() {
     // If logged in and user navigates to Login page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
+      console.log('1111')
       this.props.history.push("/dashboard");
     }
+
+    // this.props.loginUser(userData);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
+      console.log('2222')
       this.props.history.push("/dashboard");
     }
 
