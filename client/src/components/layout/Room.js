@@ -1,69 +1,54 @@
-import React, { Component, useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { logoutUser } from "../../actions/authActions";
-import store from "../../store";
-import axios from 'axios';
+import React, { Fragment, useContext } from "react";
+import WebPlayback from '../spotify/WebPlayback';
+import NowPlaying from '../spotify/NowPlaying';
+import SpotifyContext from '../../context/SpotifyContext';
+
+window.onSpotifyWebPlaybackSDKReady = () => {};
 
 const Room = () => {
-  const user = useSelector(state => state.auth.user);
-  const dispatch = useDispatch();
-  const [profile, setProfile] = useState();
+  const {
+    token,
+    playerLoaded,
+    playerSelected,
+    playerState
+  } = useContext(SpotifyContext);
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const result = await axios(
-  //       'http://localhost:5000/auth/spotify/profile',
-  //     );
- 
-  //     setProfile(result.data);
-  //   };
- 
-  //   fetchData();
-  // }, []);
+  console.log('token', token)
 
   return (
     <div style={{ height: "75vh" }} className="container valign-wrapper">
       <div className="row">
-        <div className="landing-copy col s12 center-align">
-          <h4>
-            <b>Hey there,</b> {user.name.split(" ")[0]}
-            <p className="flow-text grey-text text-darken-1">
-              You are logged into a full-stack{" "}
-              <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
-            </p>
-          </h4>
-          <button
-            style={{
-              width: "150px",
-              borderRadius: "3px",
-              letterSpacing: "1.5px",
-              marginTop: "1rem"
-            }}
-            onClick={() => {store.dispatch(logoutUser())}}
-            className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-          >
-            Logout
-          </button>
-          <a href="http://localhost:5000/auth/spotify/login">
-            <button
-              style={{
-                width: "200px",
-                borderRadius: "3px",
-                letterSpacing: "1.5px",
-                marginTop: "1rem"
-              }}
-              className="btn btn-large waves-effect waves-light hoverable green accent-3"
-            >
-              Link Spotify Account 
-            </button>
-          </a>
-        </div>
-        <div className="col s12 center-align">
-          {profile ? (
-            <p>{profile.display_name} - {profile.followers.total} followers - {profile.product === 'premium' ? 'Premium User' : 'Free User'}</p>
-          ) : ''}
-          
-        </div>
+        {/* {!userAccessToken && <IntroScreen />} */}
+          {token &&
+              <WebPlayback>
+                {!playerLoaded &&
+                  <h2 className="action-orange">Loading Player</h2>
+                }
+
+                {playerLoaded && !playerSelected && 
+                  <Fragment>
+                    <h2 className="action-green">Loading Player</h2>
+                    <h2 className="action-orange">Waiting for device to be selected</h2>
+                    <p>On a Spotify Client, open the device picker, and choose "Spotify React Player".</p>
+                  </Fragment>
+                }
+
+                {playerLoaded && playerSelected && !playerState &&
+                  <Fragment>
+                    <h2 className="action-green">Loading Player</h2>
+                    <h2 className="action-green">Waiting for device to be selected</h2>
+                    <h2 className="action-orange">Start playing music ...</h2>
+                  </Fragment>
+                }
+
+                {playerLoaded && playerSelected && playerState &&
+                  <Fragment>
+                    <h2 className="action-green">Start playing music!</h2>
+                    <NowPlaying playerState={playerState} />
+                  </Fragment>
+                }
+              </WebPlayback>
+          }
       </div>
     </div>
   );

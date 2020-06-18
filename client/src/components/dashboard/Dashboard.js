@@ -1,10 +1,12 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../actions/authActions";
 import store from "../../store";
-import { FETCHING, SUCCESS, ERROR } from '../../actions/types';
 import axios from 'axios';
+
+
 
 const Dashboard = () => {
   const user = useSelector(state => state.auth.user);
@@ -96,6 +98,19 @@ const Dashboard = () => {
             ) : ''}
           </div>
           
+          <Link to="/room/1234">
+            <button
+              style={{
+                width: "200px",
+                borderRadius: "3px",
+                letterSpacing: "1.5px",
+                marginTop: "1rem"
+              }}
+              className="btn btn-large waves-effect waves-light hoverable green accent-3"
+            >
+              Listen 
+            </button>
+          </Link>
           
           
         </div>

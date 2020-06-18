@@ -12,6 +12,7 @@ import Login from "./components/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import Room from "./components/layout/Room";
+import { SpotifyProvider } from './context/SpotifyContext';
 
 import "./App.css";
 
@@ -38,18 +39,20 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router>
-          <div className="App">
-            <Navbar />
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Switch>
-              <PrivateRoute exact path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/room/:id" component={Room} />
-            </Switch>
-          </div>
-        </Router>
+        <SpotifyProvider>
+          <Router>
+            <div className="App">
+              <Navbar />
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Switch>
+                <PrivateRoute exact path="/dashboard" component={Dashboard} />
+                <PrivateRoute path="/room/:id" component={Room} />
+              </Switch>
+            </div>
+          </Router>
+        </SpotifyProvider>
       </Provider>
     );
   }

@@ -10,7 +10,7 @@ try {
     })
 } catch (e) {}
 
-router.get('/login', passport.authenticate('spotify', {scope: ['user-read-email', 'user-read-private', 'playlist-modify-private', 'user-top-read', 'playlist-read-private', 'streaming'], showDialog: true}),
+router.get('/login', passport.authenticate('spotify', {scope: ['user-read-email', 'user-read-private', 'playlist-modify-private', 'user-top-read', 'playlist-read-private', 'streaming', 'app-remote-control', 'user-read-playback-state', 'user-read-currently-playing', 'user-modify-playback-state'], showDialog: true}),
   (req, res) => {
   });
 
@@ -42,7 +42,12 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), async (
   } catch(err) {
     console.log('Error fetching profile', err);
   }
+})
 
+router.get('/token', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  res.json({
+    accessToken: req.user.accessToken
+  })
 })
 
 module.exports = router;
