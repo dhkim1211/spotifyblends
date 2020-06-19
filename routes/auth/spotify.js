@@ -50,4 +50,11 @@ router.get('/token', passport.authenticate('jwt', { session: false }), async (re
   })
 })
 
+router.get('/refreshToken', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const newAccessToken = await spotifyService.refreshAccessToken(req.user._id, req.user.refreshToken);
+  res.json({
+    accessToken: newAccessToken
+  })
+})
+
 module.exports = router;

@@ -1,9 +1,11 @@
 import React, { Fragment, useContext, useEffect } from 'react';
 import SpotifyContext from '../../context/SpotifyContext';
+import axios from 'axios';
 
 const WebPlayback = (props) => {
   const {
     token,
+    setToken,
     setPlayerLoaded,
     setPlayerSelected,
     setUserDeviceId,
@@ -32,7 +34,7 @@ const WebPlayback = (props) => {
       } = webPlaybackInstance;
 
       clearStatePolling();
-      setPlayerSelected(true); 
+      // setPlayerSelected(true); 
       setUserDeviceId(device_id);
 
       await waitForDeviceToBeSelected();
@@ -97,13 +99,24 @@ const WebPlayback = (props) => {
         }
       }
     });
+
+    async function refreshAccessToken() {
+      const newToken = await axios.get('http://localhost:5000/auth/spotify/refreshToken');
+      console.log('newToken', newToken)
+      setToken(newToken.accessToken);
+    }
     
     webPlaybackInstance.on("initialization_error", ({ message }) => {
       console.error(message);
+      console.log('init error')
     });
     
-    webPlaybackInstance.on("authentication_error", ({ message }) => {
+    webPlaybackInstance.on("authentication_error", async ({ message }) => {
       console.error(message);
+      console.log('auth error')
+      await refreshAccessToken();
+      console.log('token', token)
+      setupWebPlaybackEvents();
     });
 
     webPlaybackInstance.on("account_error", ({ message }) => {
@@ -119,7 +132,7 @@ const WebPlayback = (props) => {
     });
 
     webPlaybackInstance.on("ready", data => {
-      setPlayerSelected(true); 
+      // setPlayerSelected(true); 
       setUserDeviceId(data);
     });
 
@@ -148,7 +161,7 @@ const WebPlayback = (props) => {
     
     let device_data = await setupWaitingForDevice();
     console.log('device_data', device_data)
-    setPlayerSelected(true); 
+    // setPlayerSelected(true); 
     setUserDeviceId(device_data);
     console.log('waitingfordevice')
 

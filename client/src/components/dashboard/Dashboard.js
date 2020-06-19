@@ -54,7 +54,7 @@ const Dashboard = () => {
           >
             Logout
           </button>
-          {profile ? '' : (
+          {/* {profile ? '' : ( */}
             <a href="http://localhost:5000/auth/spotify/login">
               <button
                 style={{
@@ -68,7 +68,7 @@ const Dashboard = () => {
                 Link Spotify Account 
               </button>
             </a>
-          )}
+          {/* )} */}
           
         </div>
         <div className="col s12 center-align">

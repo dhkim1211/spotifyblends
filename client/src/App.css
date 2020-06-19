@@ -21,3 +21,72 @@
   white-space: nowrap;
   width: 1px;
 }
+
+/* ---------------------------- */
+.now-playing-container {
+  text-align: center;
+}
+
+.song-progress-container {
+  display: flex;
+  justify-content: center;
+  margin: 2em;
+}
+
+.song-progress {
+  width: 500px;
+  height: 6px;
+  background: rgb(64, 64, 64);;
+  border-radius: 4px;
+}
+
+.song-expired {
+  margin: 0;
+  width: 100px;
+  height: 6px;
+  background: #1db954;
+  border-radius: 4px;
+}
+
+.timer-start {
+  font-size: 12px;
+  position: relative;
+  top: -5px;
+  left: -10px;
+  margin: 0;
+  margin-top: -2px;
+}
+
+.timer-end {
+  font-size: 12px;
+  position: relative;
+  top: -5px;
+  left: 10px;
+  margin: 0;
+  margin-top: -2px;
+}
+
+.song-controls {
+  justify-content: center;
+  display: flex;
+  margin-top: 20px;
+}
+
+.play-btn {
+  padding: 0 5px;
+  color: rgb(179, 179, 179);
+  cursor: pointer;
+}
+
+.song-player-container .play-btn {
+  position: relative;
+  top: -7px;
+  font-size: 40px;
+}
+
+.song-player-container .pause-btn {
+  position: relative;
+  top: -7px;
+  font-size: 40px;
+  margin: 0 5px;
+}

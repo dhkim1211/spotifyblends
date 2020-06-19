@@ -13,7 +13,7 @@ const Room = () => {
     playerState
   } = useContext(SpotifyContext);
 
-  console.log('token', token)
+  // console.log('token', token)
 
   return (
     <div style={{ height: "75vh" }} className="container valign-wrapper">
@@ -43,7 +43,6 @@ const Room = () => {
 
                 {playerLoaded && playerSelected && playerState &&
                   <Fragment>
-                    <h2 className="action-green">Start playing music!</h2>
                     <NowPlaying playerState={playerState} />
                   </Fragment>
                 }

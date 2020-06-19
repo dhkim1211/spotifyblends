@@ -22,8 +22,13 @@ module.exports = {
       const user = await User.findById(id);
       user.accessToken = newAccessToken.data.access_token;
       await user.save(function(){});
+
+      if (callback) {
+        callback(newAccessToken.data.access_token);
+      } else {
+        return newAccessToken.data.access_token;
+      }
       
-      callback(newAccessToken.data.access_token);
     } catch(err) {
       console.log('Could not refresh Access Token', err.response.data);
     }
