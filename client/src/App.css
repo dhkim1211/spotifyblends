@@ -22,9 +22,15 @@
   width: 1px;
 }
 
-/* ---------------------------- */
+/* -----------------------------
+Now Playing
+----------------------------- */
 .now-playing-container {
   text-align: center;
+}
+
+.now-playing-body img {
+  width: 100%;
 }
 
 .song-progress-container {
@@ -89,4 +95,60 @@
   top: -7px;
   font-size: 40px;
   margin: 0 5px;
+}
+
+/* -----------------------------
+Search
+----------------------------- */
+.search-box-container form {
+  padding-left: 20px;
+}
+
+.search-box-container .search-input {
+  width: calc(100% - 20px) !important;
+}
+
+.search-box-container button {
+  background: transparent;
+  border: none;
+  margin-left: -20px;
+}
+
+.search-box-container .fa-times {
+  margin-left: -27px;
+  margin-right: 30px;
+  color: gray;
+}
+
+.search-results-container {
+  height: 60vh;
+  overflow: scroll;
+}
+
+.search-results-container td {
+  padding: 5px;
+}
+
+.search-results-container tr img {
+  margin-top: 5px;
+}
+
+.nestedTr {
+  border: none;
+}
+.nestedTr td {
+  padding: 0;
+}
+
+/* -----------------------------
+Queue
+----------------------------- */
+.queue-container {
+  text-align: center;
+}
+
+.queue-wrapper {
+  height: 62vh;
+  overflow: scroll;
+  margin-bottom: 30px;
 }
