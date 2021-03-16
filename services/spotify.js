@@ -72,12 +72,28 @@ module.exports = {
           image: track.album.images[0]
         }
       })
-      console.log('consolidatedTopTracks', consolidatedTopTracks)
+      // console.log('consolidatedTopTracks', consolidatedTopTracks)
       return consolidatedTopTracks;
     } catch(err) {
       console.log('Could not fetch top artists', err.response.data);
       if (err.response.status == 401) {
         await module.exports.refreshAccessToken(id, refreshToken, module.exports.fetchTopArtists);
+      }
+    }
+  },
+  createPlaylist: async (userId, accessToken, refreshToken) => {
+    const playlistData = {
+      'name': 'Spotify Blends QUEUE',
+      'description': 'Queue for Spotify Blends app'
+    }
+    try {
+      const playlist = await axios.post(`https://api.spotify.com/v1/users/${userId}/playlists`, playlistData, {headers: {'Authorization': `Bearer ${accessToken}`}});
+      console.log('playlist', playlist.data.id)
+      return { id: playlist.data.id };
+    } catch(err) {
+      console.log('Could not create playlist', err.response.data);
+      return {
+        error: 'Could not create playlist'
       }
     }
   }

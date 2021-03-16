@@ -11,6 +11,7 @@ const SpotifyStrategy = require('passport-spotify').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const keys = require("../config/keys");
+const spotifyService = require('../services/spotify');
 
 const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -56,24 +57,55 @@ module.exports = passport => {
       console.log('passport rToken', refreshToken)
 
       User.findOne({email: profile.emails[0].value}, function(err, user) {
+          console.log('findONe')
 
           if (err) return done(err);
 
           if (user) {
-              user.accessToken = accessToken;
-              user.refreshToken = refreshToken;
-              user.save();
+            spotifyService.createPlaylist(profile.id, accessToken, refreshToken, (err, playlistId) => {
+                if (err) return done(err, {message: 'Playlist could not be created'});
+                console.log('err', err)
+                console.log('playlistId', playlistId.id);
 
-              return done(null, user);
+                user.queueId = playlistId.id;
+                user.accessToken = accessToken;
+                user.refreshToken = refreshToken;
+                user.save();
+
+                return done(null, user);
+
+                
+            })
+
+              
           }
           else {
+              console.log('not found user')
+            let queuePlaylistId;
+            console.log('queuePlaylistId ', queuePlaylistId);
+
+            spotifyService
+                .createPlaylist(profile.id, accessToken, refreshToken)
+                .then(function(playlistId) {
+                    console.log('playlistID', playlistId)
+                    queuePlaylistId = playlistId;
+                })
+                .catch(function(err) {
+                    console.log('error', error)
+                    return done(err, {message: 'Playlist could not be created'});
+                })
+
+                console.log('queuePlaylistId: ', queuePlaylistId);
+
               User.create({
                   name: profile.id,
                   email: profile.emails[0].value,
                   accessToken: accessToken,
                   refreshToken: refreshToken,
-                  product: profile.product
+                  product: profile.product,
+                  queueId: queuePlaylistId
               }, (err, newUser) => {
+                  console.log('newuser', newUser);
                   if (err) return done(err);
 
                   if (!newUser) return done(null, {message: 'New user could not be created'});

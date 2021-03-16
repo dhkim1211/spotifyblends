@@ -10,7 +10,7 @@ try {
     })
 } catch (e) {}
 
-router.get('/login', passport.authenticate('spotify', {scope: ['user-read-email', 'user-read-private', 'playlist-modify-private', 'user-top-read', 'playlist-read-private', 'streaming', 'app-remote-control', 'user-read-playback-state', 'user-read-currently-playing', 'user-modify-playback-state'], showDialog: true}),
+router.get('/login', passport.authenticate('spotify', {scope: ['user-read-email', 'user-read-private', 'playlist-modify-private', 'user-top-read', 'playlist-read-private', 'streaming', 'app-remote-control', 'user-read-playback-state', 'user-read-currently-playing', 'user-modify-playback-state', 'playlist-modify-public'], showDialog: true}),
   (req, res) => {
   });
 
