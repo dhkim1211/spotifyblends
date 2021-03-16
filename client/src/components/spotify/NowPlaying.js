@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import axios from 'axios';
 import SpotifyContext from '../../context/SpotifyContext';
 
 const NowPlaying = (props) => {
-  const { token, userDeviceId } = useContext(SpotifyContext);
+  const { token, userDeviceId, addToPlaybackQueue } = useContext(SpotifyContext);
 
   let {
     playerState,
     playerState: { position: position_ms }
   } = props;
 
-  console.log('playerstate', playerState)
+  // console.log('playerstate', playerState)
   let {
     id,
     uri: track_uri,
@@ -63,9 +63,18 @@ const NowPlaying = (props) => {
     }
   }
 
+  // TODO: Better way to trigger
+  useEffect(() => {
+    const minuteLeftInPlayback = (duration_ms - position_ms) < 60000 && (duration_ms - position_ms) > 59925;
+    console.log('minuteLeftInPlayback', minuteLeftInPlayback);
+    if (minuteLeftInPlayback) {
+      addToPlaybackQueue();
+    }
+  }, [playerState.position])
+
 
   return (
-    <div className="now-playing-container">
+    <div className="now-playing-container col s4">
       <div className="now-playing-body">
         <img src={album_image} alt={track_name} className="now-playing-cover"/>
         <h5><a href={track_uri}>{track_name}</a></h5>

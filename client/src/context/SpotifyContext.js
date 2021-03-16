@@ -10,6 +10,19 @@ export const SpotifyProvider = (props) => {
   const [playerSelected, setPlayerSelected] = useState();
   const [playerState, setPlayerState] = useState();
   const [userDeviceId, setUserDeviceId] = useState();
+  const [queue, setQueue] = useState([]);
+
+  const addToPlaybackQueue = async () => {
+    try {
+      const response = await axios.post(`https://api.spotify.com/v1/me/player/queue?uri=${queue[0].uri}`, {}, {headers: {'Authorization': `Bearer ${token}`}});
+      console.log('response', response)
+      const songToRemove = queue[0];
+      setQueue(queue.filter(track => track.uri !== songToRemove.uri));
+      console.log('queue!', queue);
+    } catch(err) {
+      console.error('Could not add to playback queue', err.response);
+    }
+  } 
 
   const providerValues = useMemo(() => ({
     playerLoaded,
@@ -21,8 +34,11 @@ export const SpotifyProvider = (props) => {
     token,
     setToken,
     userDeviceId,
-    setUserDeviceId
-  }), [playerLoaded, playerSelected, playerState, token, userDeviceId]);
+    setUserDeviceId,
+    queue,
+    setQueue,
+    addToPlaybackQueue
+  }), [playerLoaded, playerSelected, playerState, token, userDeviceId, queue]);
 
   useEffect(() => {
     async function fetchAccessToken() {
