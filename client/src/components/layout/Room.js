@@ -1,7 +1,9 @@
 import React, { Fragment, useContext } from "react";
 import WebPlayback from '../spotify/WebPlayback';
 import NowPlaying from '../spotify/NowPlaying';
+import Search from '../spotify/Search';
 import SpotifyContext from '../../context/SpotifyContext';
+import UserQueue from '../spotify/UserQueue';
 
 window.onSpotifyWebPlaybackSDKReady = () => {};
 
@@ -10,13 +12,13 @@ const Room = () => {
     token,
     playerLoaded,
     playerSelected,
-    playerState
+    playerState,
   } = useContext(SpotifyContext);
 
   // console.log('token', token)
 
   return (
-    <div style={{ height: "75vh" }} className="container valign-wrapper">
+    <div className="container-fluid valign-wrapper">
       <div className="row">
         {/* {!userAccessToken && <IntroScreen />} */}
           {token &&
@@ -44,8 +46,12 @@ const Room = () => {
                 {playerLoaded && playerSelected && playerState &&
                   <Fragment>
                     <NowPlaying playerState={playerState} />
+                    <Search />
+                    <UserQueue />
                   </Fragment>
+                  
                 }
+                
               </WebPlayback>
           }
       </div>
